@@ -9,31 +9,44 @@
 
 ##  Overview
 
-This project implements a deepfake detection system using a hybrid of machine learning and deep learning models. It classifies facial images as either **real** or **fake** based on both handcrafted features and raw image data. The system was designed to evaluate the performance of multiple traditional ML classifiers alongside a CNN-based deep learning model to determine which approach is most effective for deepfake detection.
+This project implements a deepfake detection system using both machine learning and deep learning approaches. It processes facial images to classify them as either **real** or **fake** by leveraging handcrafted visual features and deep neural representations. Traditional ML models were developed and evaluated alongside a deep learning baseline based on the [Meso4 CNN architecture](https://arxiv.org/pdf/1809.00888), commonly used in prior deepfake research.
 
 ---
 
 ##  Dataset & Preprocessing
 
-The dataset used is [WildDeepfake](https://huggingface.co/datasets/xingjunm/WildDeepfake/tree/main/deepfake_in_the_wild), a real-world collection of over 7,000 facial sequences sourced from deepfake videos on the internet. It contains an equal distribution of real and fake face images with variations in angle, resolution, lighting, and manipulation techniques.
+The dataset used in this project is a **large, real-world deepfake dataset** collected from various internet sources. It contains compressed `.tar.gz` archives hosting thousands of facial images extracted from videos. The dataset is publicly available on Hugging Face:  
+🔗 [WildDeepfake on Hugging Face](https://huggingface.co/datasets/xingjunm/WildDeepfake/tree/main/deepfake_in_the_wild)
 
-The original files are provided as `.tar.gz` archives containing `.png` images. A custom preprocessing pipeline was developed to recursively extract all `.png` images, filter out irrelevant data, and organize them into labeled directories (`real` or `fake`). Six handcrafted visual features—**entropy, blur, noise, keypoints, blobs**, and **phase unwrapping**—were computed for each image and compiled into a structured DataFrame used for training ML models.
+Custom preprocessing scripts were developed to:
+- Extract `.png` images from `.tar.gz` archives
+- Organize and clean the images into labeled directories
+- Extract six meaningful image-based features:
+  - Entropy
+  - Blur
+  - Noise
+  - Keypoints
+  - Blobs
+  - Phase unwrapping
+
+These features were compiled into a structured dataset for machine learning models.
 
 ---
 
-## Methodology
+##  Methodology
 
-### Machine Learning Models (using extracted features)
+###  Traditional Machine Learning Models (Scikit-learn)
 - **Random Forest**
 - **Support Vector Machine (SVM)**
-- **XGBoost**
 - **Logistic Regression**
+- **K-Nearest Neighbors (KNN)**
+- **XGBoost**
 
-These models were trained on a numerical dataset of handcrafted image features. Feature importance was tested using ablation, and model performance was evaluated using standard classification metrics.
+These models were trained using the extracted features and evaluated using standard performance metrics.
 
-### Deep Learning Model
-- **Meso4 CNN (Keras/TensorFlow)**  
-The Meso4 model was trained directly on raw facial images, resized and normalized, allowing it to learn discriminative patterns automatically without manual feature engineering.
+###  Deep Learning Model
+- **Meso4 CNN (TensorFlow/Keras)**  
+  A compact convolutional neural network that processes raw images and learns spatial representations without manual feature engineering.
 
 ---
 
@@ -43,11 +56,12 @@ The Meso4 model was trained directly on raw facial images, resized and normalize
 |----------------------|----------|-----------|--------|----------|
 | **Meso4 (CNN)**      | 0.9400   | 0.9380    | 0.9420 | 0.9400   |
 | **Random Forest**    | 0.9162   | 0.9155    | 0.9250 | 0.9202   |
+| **KNN**              | 0.8884   | 0.8935    | 0.8929 | 0.8932   |
 | **Logistic Regression** | 0.8884 | 0.8935    | 0.8929 | 0.8932   |
 | **XGBoost**          | 0.8065   | 0.7817    | 0.8737 | 0.8251   |
 | **SVM**              | 0.7246   | 0.7060    | 0.8106 | 0.7547   |
 
->  The Meso
+>  The baseline Meso4 CNN model demonstrated the strongest performance, highlighting the strength of convolutional features in deepfake detection tasks.
 
 ---
 
