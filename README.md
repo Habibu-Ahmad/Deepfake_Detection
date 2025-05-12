@@ -1,4 +1,4 @@
-# 🧠 Deepfake Detection System using ML & DL
+#  Deepfake Detection System using ML & DL
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.6-orange)
@@ -7,61 +7,51 @@
 
 ---
 
-## 📌 Overview
+##  Overview
 
-This project implements a hybrid deepfake detection system using both machine learning and deep learning techniques. The goal is to accurately classify facial images as **real** or **fake** using handcrafted image features and a CNN-based architecture. A custom feature extraction pipeline is combined with benchmark ML models and a deep learning model to compare performance and identify the most effective approach. The CNN model used is **Meso4**, optimized for detecting artifacts introduced during deepfake generation.
-
----
-
-## 📁 Dataset & Preprocessing
-
-- **Dataset**: [WildDeepfake](https://huggingface.co/datasets/faceforensics/wilddeepfake)  
-- **Format**: `.tar.gz` archives containing `.png` facial images  
-- **Total samples**: 7,314 face sequences from 707 videos (balanced between real and fake)  
-- **Source**: Real-world deepfakes collected from the internet (diverse in resolution, lighting, angles)
-
-### 🔧 Preprocessing Pipeline
-1. Recursively extracted `.tar.gz` files using custom Python scripts.
-2. Filtered and organized only `.png` files into labeled directories.
-3. Extracted six handcrafted features per image:
-   - Entropy
-   - Blur
-   - Noise
-   - Keypoints
-   - Blobs
-   - Phase unwrapping
-4. Stored extracted features and labels in a structured DataFrame (`.csv`) for ML models.
+This project implements a deepfake detection system using a hybrid of machine learning and deep learning models. It classifies facial images as either **real** or **fake** based on both handcrafted features and raw image data. The system was designed to evaluate the performance of multiple traditional ML classifiers alongside a CNN-based deep learning model to determine which approach is most effective for deepfake detection.
 
 ---
 
-## 🧠 Methodology
+##  Dataset & Preprocessing
 
-### ✅ Machine Learning Models (Scikit-learn)
-- Logistic Regression
-- Random Forest
-- Support Vector Machine (SVM)
+The dataset used is [WildDeepfake](https://huggingface.co/datasets/xingjunm/WildDeepfake/tree/main/deepfake_in_the_wild), a real-world collection of over 7,000 facial sequences sourced from deepfake videos on the internet. It contains an equal distribution of real and fake face images with variations in angle, resolution, lighting, and manipulation techniques.
 
-Trained on the handcrafted features. Feature importance was analyzed via ablation testing to determine their contribution.
-
-### 🔬 Deep Learning Model (TensorFlow/Keras)
-- **Meso4 CNN** (optimized for deepfake detection)
-- Trained directly on raw images resized and normalized
-- Able to learn discriminative features without manual extraction
+The original files are provided as `.tar.gz` archives containing `.png` images. A custom preprocessing pipeline was developed to recursively extract all `.png` images, filter out irrelevant data, and organize them into labeled directories (`real` or `fake`). Six handcrafted visual features—**entropy, blur, noise, keypoints, blobs**, and **phase unwrapping**—were computed for each image and compiled into a structured DataFrame used for training ML models.
 
 ---
 
-## 📊 Results
+## Methodology
 
-| Model               | Accuracy | Precision | Recall | F1 Score | AUC  |
-|---------------------|----------|-----------|--------|----------|------|
-| **Meso4 (CNN)**     | 94.00%   | 93.80%    | 94.20% | 94.00%   | 0.98 |
-| **SVM**             | 91.50%   | 90.30%    | 92.50% | 91.37%   | 0.92 |
-| **Random Forest**   | 88.00%   | 87.20%    | 89.00% | 88.10%   | 0.89 |
-| **Logistic Reg.**   | 85.00%   | 83.50%    | 86.00% | 84.75%   | 0.87 |
+### Machine Learning Models (using extracted features)
+- **Random Forest**
+- **Support Vector Machine (SVM)**
+- **XGBoost**
+- **Logistic Regression**
+
+These models were trained on a numerical dataset of handcrafted image features. Feature importance was tested using ablation, and model performance was evaluated using standard classification metrics.
+
+### Deep Learning Model
+- **Meso4 CNN (Keras/TensorFlow)**  
+The Meso4 model was trained directly on raw facial images, resized and normalized, allowing it to learn discriminative patterns automatically without manual feature engineering.
 
 ---
 
-## 💻 Setup & Run
+##  Results
+
+| Model                | Accuracy | Precision | Recall | F1 Score |
+|----------------------|----------|-----------|--------|----------|
+| **Meso4 (CNN)**      | 0.9400   | 0.9380    | 0.9420 | 0.9400   |
+| **Random Forest**    | 0.9162   | 0.9155    | 0.9250 | 0.9202   |
+| **Logistic Regression** | 0.8884 | 0.8935    | 0.8929 | 0.8932   |
+| **XGBoost**          | 0.8065   | 0.7817    | 0.8737 | 0.8251   |
+| **SVM**              | 0.7246   | 0.7060    | 0.8106 | 0.7547   |
+
+>  The Meso
+
+---
+
+##  Setup & Run
 
 ```bash
 git clone https://github.com/your-username/deepfake-detector.git
