@@ -18,18 +18,12 @@ This project implements a deepfake detection system using both traditional machi
 The dataset used in this project is a **large, real-world deepfake dataset** collected from various internet sources. It contains compressed `.tar.gz` archives hosting thousands of facial images extracted from videos. The dataset is publicly available on Hugging Face:  
 🔗 [WildDeepfake on Hugging Face](https://huggingface.co/datasets/xingjunm/WildDeepfake/tree/main/deepfake_in_the_wild)
 
-Custom preprocessing scripts were developed to:
-- Extract `.png` images from `.tar.gz` archives
-- Organize and clean the images into labeled directories
-- Extract six meaningful image-based features:
-  - Entropy
-  - Blur
-  - Noise
-  - Keypoints
-  - Blobs
-  - Phase unwrapping
+A custom preprocessing pipeline was implemented to:
+-  Extract .png images from Hugging Face’s .tar.gz archives
+-  Organize and clean the images into labeled directories and
+-  Compute six image-based features (entropy, blur, noise, keypoints, blobs, and phase unwrapping).
 
-These features were compiled into a structured dataset for machine learning models.
+  The resulting structured dataset was used to train and evaluate machine learning models.
 
 ---
 
